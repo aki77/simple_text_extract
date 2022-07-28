@@ -5,11 +5,12 @@ module SimpleTextExtract
     class ZipExtract < Base
       def extract
         require "zip"
+        require "nkf"
 
         result = []
         Zip::File.open(file) do |zip_file|
           zip_file.each do |entry|
-            result << entry.name
+            result << NKF::nkf('-w', entry.name)
             result << SimpleTextExtract.extract(
               raw: entry.get_input_stream.read,
               filename: entry.name
