@@ -3,6 +3,10 @@
 module SimpleTextExtract
   module FormatExtractor
     class DocX < Base
+      def self.accept?(path)
+        path.downcase.end_with?(".docx")
+      end
+
       def extract
         return nil if missing_dependency?("unzip")
 

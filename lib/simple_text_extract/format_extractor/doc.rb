@@ -3,6 +3,10 @@
 module SimpleTextExtract
   module FormatExtractor
     class Doc < Base
+      def self.accept?(path)
+        path.downcase.end_with?(".doc")
+      end
+
       def extract
         return nil if missing_dependency?("antiword")
 

@@ -28,7 +28,7 @@ module SimpleTextExtract
         return unless file
 
         begin
-          FormatExtractorFactory.call(file).extract
+          SimpleTextExtract.format_extractor_class(file.path).new(file).extract
         rescue StandardError
           nil
         ensure

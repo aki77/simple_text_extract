@@ -2,10 +2,29 @@
 
 require "simple_text_extract/version"
 require "simple_text_extract/text_extractor"
-require "simple_text_extract/format_extractor_factory"
+require "simple_text_extract/format_extractor/base"
+require "simple_text_extract/format_extractor/plain_text"
+require "simple_text_extract/format_extractor/pdf"
+require "simple_text_extract/format_extractor/xls_x"
+require "simple_text_extract/format_extractor/xls"
+require "simple_text_extract/format_extractor/doc_x"
+require "simple_text_extract/format_extractor/doc"
+require "simple_text_extract/format_extractor/zip_extract"
 
 module SimpleTextExtract
-  SUPPORTED_FILETYPES = ["xls", "xlsx", "doc", "docx", "txt", "pdf", "csv", "zip"].freeze
+  class << self
+    attr_accessor :format_extractors
+  end
+
+  self.format_extractors = [
+    FormatExtractor::ZipExtract,
+    FormatExtractor::PlainText,
+    FormatExtractor::PDF,
+    FormatExtractor::XlsX,
+    FormatExtractor::Xls,
+    FormatExtractor::DocX,
+    FormatExtractor::Doc,
+  ]
 
   class Error < StandardError; end
 
@@ -14,6 +33,10 @@ module SimpleTextExtract
   end
 
   def self.supports?(filename: nil)
-    SUPPORTED_FILETYPES.include?(filename.split(".").last)
+    format_extractors.any? { |klass| klass.accept?(filename) }
+  end
+
+  def self.format_extractor_class(filename)
+    format_extractors.detect { |klass| klass.accept?(filename) } || FormatExtractor::Base
   end
 end

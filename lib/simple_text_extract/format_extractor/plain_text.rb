@@ -3,6 +3,10 @@
 module SimpleTextExtract
   module FormatExtractor
     class PlainText < Base
+      def self.accept?(path)
+        path.match?(/(.txt$|.csv$)/i)
+      end
+
       def extract
         file.read
       end

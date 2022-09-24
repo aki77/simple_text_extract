@@ -3,6 +3,10 @@
 module SimpleTextExtract
   module FormatExtractor
     class ZipExtract < Base
+      def self.accept?(path)
+        path.downcase.end_with?(".zip")
+      end
+
       def extract
         require "zip"
         require "nkf"

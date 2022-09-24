@@ -7,6 +7,10 @@ module SimpleTextExtract
     class Base
       attr_reader :file
 
+      def self.accept?(path)
+        false
+      end
+
       def initialize(file)
         @file = file
       end

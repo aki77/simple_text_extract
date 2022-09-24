@@ -3,6 +3,10 @@
 module SimpleTextExtract
   module FormatExtractor
     class Xls < Base
+      def self.accept?(path)
+        path.downcase.end_with?(".xls")
+      end
+
       def extract
         require "spreadsheet"
 

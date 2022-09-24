@@ -3,6 +3,10 @@
 module SimpleTextExtract
   module FormatExtractor
     class XlsX < Base
+      def self.accept?(path)
+        path.downcase.end_with?(".xlsx")
+      end
+
       def extract
         require 'creek'
         creek = Creek::Book.new(file)
